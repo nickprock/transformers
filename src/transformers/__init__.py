@@ -96,7 +96,7 @@ _import_structure = {
     "feature_extraction_sequence_utils": ["SequenceFeatureExtractor"],
     "feature_extraction_utils": ["BatchFeature", "FeatureExtractionMixin"],
     "file_utils": [],
-    "generation": ["GenerationConfig"],
+    "generation": ["GenerationConfig", "TextIteratorStreamer", "TextStreamer"],
     "hf_argparser": ["HfArgumentParser"],
     "image_transforms": [],
     "integrations": [
@@ -386,6 +386,7 @@ _import_structure = {
     "models.nat": ["NAT_PRETRAINED_CONFIG_ARCHIVE_MAP", "NatConfig"],
     "models.nezha": ["NEZHA_PRETRAINED_CONFIG_ARCHIVE_MAP", "NezhaConfig"],
     "models.nllb": [],
+    "models.nllb_moe": ["NLLB_MOE_PRETRAINED_CONFIG_ARCHIVE_MAP", "NllbMoeConfig"],
     "models.nystromformer": [
         "NYSTROMFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP",
         "NystromformerConfig",
@@ -739,6 +740,7 @@ else:
     _import_structure["models.layoutlmv3"].append("LayoutLMv3TokenizerFast")
     _import_structure["models.layoutxlm"].append("LayoutXLMTokenizerFast")
     _import_structure["models.led"].append("LEDTokenizerFast")
+    _import_structure["models.llama"].append("LlamaTokenizerFast")
     _import_structure["models.longformer"].append("LongformerTokenizerFast")
     _import_structure["models.lxmert"].append("LxmertTokenizerFast")
     _import_structure["models.markuplm"].append("MarkupLMTokenizerFast")
@@ -1130,6 +1132,7 @@ else:
         [
             "BIOGPT_PRETRAINED_MODEL_ARCHIVE_LIST",
             "BioGptForCausalLM",
+            "BioGptForTokenClassification",
             "BioGptModel",
             "BioGptPreTrainedModel",
         ]
@@ -2045,6 +2048,16 @@ else:
             "NezhaPreTrainedModel",
         ]
     )
+    _import_structure["models.nllb_moe"].extend(
+        [
+            "NLLB_MOE_PRETRAINED_MODEL_ARCHIVE_LIST",
+            "NllbMoeForConditionalGeneration",
+            "NllbMoeModel",
+            "NllbMoePreTrainedModel",
+            "NllbMoeSparseMLP",
+            "NllbMoeTop2Router",
+        ]
+    )
     _import_structure["models.nystromformer"].extend(
         [
             "NYSTROMFORMER_PRETRAINED_MODEL_ARCHIVE_LIST",
@@ -2891,6 +2904,18 @@ else:
     _import_structure["models.blenderbot_small"].extend(
         ["TFBlenderbotSmallForConditionalGeneration", "TFBlenderbotSmallModel", "TFBlenderbotSmallPreTrainedModel"]
     )
+    _import_structure["models.blip"].extend(
+        [
+            "TF_BLIP_PRETRAINED_MODEL_ARCHIVE_LIST",
+            "TFBlipForConditionalGeneration",
+            "TFBlipForImageTextRetrieval",
+            "TFBlipForQuestionAnswering",
+            "TFBlipModel",
+            "TFBlipPreTrainedModel",
+            "TFBlipTextModel",
+            "TFBlipVisionModel",
+        ]
+    )
     _import_structure["models.camembert"].extend(
         [
             "TF_CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST",
@@ -3637,6 +3662,9 @@ else:
             "FlaxPegasusPreTrainedModel",
         ]
     )
+    _import_structure["models.regnet"].extend(
+        ["FlaxRegNetForImageClassification", "FlaxRegNetModel", "FlaxRegNetPreTrainedModel"]
+    )
     _import_structure["models.resnet"].extend(
         ["FlaxResNetForImageClassification", "FlaxResNetModel", "FlaxResNetPreTrainedModel"]
     )
@@ -3758,7 +3786,7 @@ if TYPE_CHECKING:
     from .feature_extraction_utils import BatchFeature, FeatureExtractionMixin
 
     # Generation
-    from .generation import GenerationConfig
+    from .generation import GenerationConfig, TextIteratorStreamer, TextStreamer
     from .hf_argparser import HfArgumentParser
 
     # Integrations
@@ -4034,6 +4062,7 @@ if TYPE_CHECKING:
     from .models.mvp import MvpConfig, MvpTokenizer
     from .models.nat import NAT_PRETRAINED_CONFIG_ARCHIVE_MAP, NatConfig
     from .models.nezha import NEZHA_PRETRAINED_CONFIG_ARCHIVE_MAP, NezhaConfig
+    from .models.nllb_moe import NLLB_MOE_PRETRAINED_CONFIG_ARCHIVE_MAP, NllbMoeConfig
     from .models.nystromformer import NYSTROMFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, NystromformerConfig
     from .models.oneformer import ONEFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, OneFormerConfig, OneFormerProcessor
     from .models.openai import OPENAI_GPT_PRETRAINED_CONFIG_ARCHIVE_MAP, OpenAIGPTConfig, OpenAIGPTTokenizer
@@ -4360,6 +4389,7 @@ if TYPE_CHECKING:
         from .models.layoutlmv3 import LayoutLMv3TokenizerFast
         from .models.layoutxlm import LayoutXLMTokenizerFast
         from .models.led import LEDTokenizerFast
+        from .models.llama import LlamaTokenizerFast
         from .models.longformer import LongformerTokenizerFast
         from .models.lxmert import LxmertTokenizerFast
         from .models.markuplm import MarkupLMTokenizerFast
@@ -4691,6 +4721,7 @@ if TYPE_CHECKING:
         from .models.biogpt import (
             BIOGPT_PRETRAINED_MODEL_ARCHIVE_LIST,
             BioGptForCausalLM,
+            BioGptForTokenClassification,
             BioGptModel,
             BioGptPreTrainedModel,
         )
@@ -5422,6 +5453,14 @@ if TYPE_CHECKING:
             NezhaModel,
             NezhaPreTrainedModel,
         )
+        from .models.nllb_moe import (
+            NLLB_MOE_PRETRAINED_MODEL_ARCHIVE_LIST,
+            NllbMoeForConditionalGeneration,
+            NllbMoeModel,
+            NllbMoePreTrainedModel,
+            NllbMoeSparseMLP,
+            NllbMoeTop2Router,
+        )
         from .models.nystromformer import (
             NYSTROMFORMER_PRETRAINED_MODEL_ARCHIVE_LIST,
             NystromformerForMaskedLM,
@@ -6123,6 +6162,16 @@ if TYPE_CHECKING:
             TFBlenderbotSmallModel,
             TFBlenderbotSmallPreTrainedModel,
         )
+        from .models.blip import (
+            TF_BLIP_PRETRAINED_MODEL_ARCHIVE_LIST,
+            TFBlipForConditionalGeneration,
+            TFBlipForImageTextRetrieval,
+            TFBlipForQuestionAnswering,
+            TFBlipModel,
+            TFBlipPreTrainedModel,
+            TFBlipTextModel,
+            TFBlipVisionModel,
+        )
         from .models.camembert import (
             TF_CAMEMBERT_PRETRAINED_MODEL_ARCHIVE_LIST,
             TFCamembertForCausalLM,
@@ -6695,6 +6744,7 @@ if TYPE_CHECKING:
         from .models.mt5 import FlaxMT5EncoderModel, FlaxMT5ForConditionalGeneration, FlaxMT5Model
         from .models.opt import FlaxOPTForCausalLM, FlaxOPTModel, FlaxOPTPreTrainedModel
         from .models.pegasus import FlaxPegasusForConditionalGeneration, FlaxPegasusModel, FlaxPegasusPreTrainedModel
+        from .models.regnet import FlaxRegNetForImageClassification, FlaxRegNetModel, FlaxRegNetPreTrainedModel
         from .models.resnet import FlaxResNetForImageClassification, FlaxResNetModel, FlaxResNetPreTrainedModel
         from .models.roberta import (
             FlaxRobertaForCausalLM,
